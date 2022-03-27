@@ -56,31 +56,34 @@ export default {
         return;
       }
       this.invalidInput = false;
-      
+
       // this.$emit('survey-submit', {
       //   userName: this.enteredName,
       //   rating: this.chosenRating,
       // });
+
       this.error = null;
       fetch('https://vue-http-demo-8ddeb-default-rtdb.firebaseio.com/surveys.json', {
         method: 'POST',
         headers: {
-          // 告诉服务器我们的请求会加上json格式的数据
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          // 数据
           name: this.enteredName,
           rating: this.chosenRating,
         }),
-      }).then(res => {
-        if(!res.ok){
-          throw new Error('Could not save data!')
-        }
-      }).catch(error => {
-        console.log(error);
-        this.error = error.message;
-      });
+      })
+        .then((response) => {
+          if (response.ok) {
+            // ...
+          } else {
+            throw new Error('Could not save data!');
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.error = error.message;
+        });
 
       this.enteredName = '';
       this.chosenRating = null;

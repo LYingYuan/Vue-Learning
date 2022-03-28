@@ -2,6 +2,7 @@
   <section>
     <h2>{{ username }}</h2>
     <h3>{{ userage }} Years</h3>
+    <button @click="btn"></button>
   </section>
 </template>
 
@@ -16,6 +17,10 @@ export default {
       type: Number,
       required: true
     }
-  }
+  },methods: {
+    btn() {
+      console.log(this.username);
+    }
+  },
 };
 </script>

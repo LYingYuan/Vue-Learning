@@ -16,11 +16,8 @@ export default {
   methods: {
     confirmInput() {
       // do something
-      this.$router.push('/teams'); // 将新路由添加进历史记录里,并去到它
+      this.$router.push('/teams');
     }
-  },
-  beforeRouteEnter (to, from, next) {
-    // ...
   }
 };
 </script>

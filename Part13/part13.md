@@ -141,6 +141,8 @@ a.active {
 }
 ```
 
+
+
 ---
 
 # 以编程模式导航
@@ -213,6 +215,8 @@ url 会改变，但是界面没有转换。
 ```js
 { path: '/', redirect: '/teams' },
 ```
+
+
 
 ```js
 { path: '/teams', component: TeamsList, alias: '/' },
@@ -315,6 +319,8 @@ APP.vue
   </footer>
 </template>
 ```
+
+
 
 ---
 

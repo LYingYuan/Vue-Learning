@@ -214,3 +214,58 @@ enter
 
 ## leave after-leave
 
+# enter-cancelled
+
+# leave-cancelled
+
+在连续点击的时候用上他们，这样就不会出现闪烁的情况
+
+```js
+methods: {
+    enterCancelled() {
+      clearInterval(this.enterInterval);
+    },
+    leaveCancelled() {
+      clearInterval(this.leaveCancelled)
+    },
+    enter(el, done) {
+      console.log('enter');
+      console.log(el);
+      let round = 1;
+      this.enterInterval = setInterval(() => {
+        el.style.opacity = round * 0.01;
+        round++;
+        if (round > 100) {
+          clearInterval(this.enterInterval);
+          done();
+        }
+      }, 20);
+    },
+    leave(el, done) {
+      console.log('leave');
+      let round = 1;
+      this.leaveInterval = setInterval(() => {
+        el.style.opacity = 1 - round * 0.01;
+        round++;
+        if (round > 100) {
+          clearInterval(this.leaveInterval);
+          done();
+        }
+      }, 20);
+    },
+  },
+```
+
+# :css="false"
+
+告诉vue这个组件不会用到css，全部由js控制动画，这样就不会去搜索css，让一切变得更快
+
+# animated-list
+
+## transition-group
+
+不同于transition，它会被添加到dom中，成为其中的一个元素，使用`tag='ul'`就变成了ul标签
+
+### *-move
+
+用于处理其他元素

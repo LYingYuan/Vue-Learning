@@ -1,20 +1,26 @@
 <template>
   <div class="container">
-    <div class="block" :class="{ animate: animatedBlock }"></div>
+    <users-list></users-list>
+  </div>
+  <div class="container">
+    <div class="block" :class="{animate: animatedBlock}"></div>
     <button @click="animateBlock">Animate</button>
   </div>
   <div class="container">
     <transition
+      :css="false"
       @before-enter="beforeEnter"
       @enter="enter"
+      @after-enter="afterEnter"
       @before-leave="beforeLeave"
       @leave="leave"
+      @after-leave="afterLeave"
       @enter-cancelled="enterCancelled"
       @leave-cancelled="leaveCancelled"
     >
-      <p v-if="paragraphIsVisible">This is only sometime visible...</p>
+      <p v-if="paraIsVisible">This is only sometimes visible...</p>
     </transition>
-    <button @click="toggleParagraph()">Toggle Paragraph</button>
+    <button @click="toggleParagraph">Toggle Paragraph</button>
   </div>
   <div class="container">
     <transition name="fade-button" mode="out-in">
@@ -29,30 +35,38 @@
   <div class="container">
     <button @click="showDialog">Show Dialog</button>
   </div>
-</template>
+</template>  
 
 <script>
+import UsersList from './components/UsersList.vue';
+
 export default {
+  components: {
+    UsersList,
+  },
   data() {
     return {
       animatedBlock: false,
       dialogIsVisible: false,
-      paragraphIsVisible: false,
+      paraIsVisible: false,
       usersAreVisible: false,
       enterInterval: null,
       leaveInterval: null,
     };
   },
   methods: {
-    enterCancelled() {
+    enterCancelled(el) {
+      console.log(el);
       clearInterval(this.enterInterval);
     },
-    leaveCancelled() {
+    leaveCancelled(el) {
+      console.log(el);
       clearInterval(this.leaveInterval);
     },
     beforeEnter(el) {
-      console.log('beforeEnter()');
+      console.log('beforeEnter');
       console.log(el);
+      el.style.opacity = 0;
     },
     enter(el, done) {
       console.log('enter');
@@ -67,6 +81,15 @@ export default {
         }
       }, 20);
     },
+    afterEnter(el) {
+      console.log('afterEnter');
+      console.log(el);
+    },
+    beforeLeave(el) {
+      console.log('beforeLeave');
+      console.log(el);
+      el.style.opacity = 1;
+    },
     leave(el, done) {
       console.log('leave');
       console.log(el);
@@ -80,10 +103,9 @@ export default {
         }
       }, 20);
     },
-    beforeLeave(el) {
-      console.log('beforeLeave()');
+    afterLeave(el) {
+      console.log('afterLeave');
       console.log(el);
-      el.style.opacity = 1;
     },
     showUsers() {
       this.usersAreVisible = true;
@@ -95,7 +117,7 @@ export default {
       this.animatedBlock = true;
     },
     toggleParagraph() {
-      this.paragraphIsVisible = !this.paragraphIsVisible;
+      this.paraIsVisible = !this.paraIsVisible;
     },
     showDialog() {
       this.dialogIsVisible = true;
@@ -149,47 +171,10 @@ button:active {
   border: 2px solid #ccc;
   border-radius: 12px;
 }
-
 .animate {
   /* transform: translateX(-150px); */
   animation: slide-fade 0.3s ease-out forwards;
 }
-
-/* .v-enter-from {
-  opacity: 0;
-  transform: translateY(-30px);
-}
-
-.v-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.v-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.v-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.v-leave-active {
-  transition: all 0.3s ease-in;
-}
-
-.v-leave-to {
-  opacity: 0;
-  transform: translateY(-30px);
-} */
-
-/* .para-enter-active {
-  animation: slide-fade 0.3s ease-out;
-}
-
-.para-leave-active {
-  animation: slide-fade 0.3s ease-out;
-} */
 
 .fade-button-enter-from,
 .fade-button-leave-to {
@@ -209,7 +194,7 @@ button:active {
   opacity: 1;
 }
 
-@keyframes slide-fade {
+@keyframes slide-scale {
   0% {
     transform: translateX(0) scale(1);
   }

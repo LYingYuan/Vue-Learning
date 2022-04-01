@@ -133,7 +133,7 @@ export default {
 
 ![image-20220331213801034](part15.assets/image-20220331213801034.png)
 
-```vue
+```js
 addOne() {
       // this.$store.commit('increase', { value: 1 });
       this.$store.commit({
@@ -199,3 +199,310 @@ export default {
 };
 ```
 
+## 互相依赖
+
+```js
+const store = createStore({
+  state() {
+    return {
+      counter: 0,
+    };
+  },
+  mutations: {
+    increase(state, payload) {
+      state.counter += payload.value;
+    },
+  },
+  getters: {
+    finalCounter(state) {
+      return state.counter * 3;
+    },
+    normalizedCounter(_, getters) {
+      const finalCounter = getters.finalCounter;
+      if(finalCounter < 0){
+        return 0;
+      }
+      if(finalCounter > 100){
+        return 100;
+      }
+      return finalCounter;
+    }
+  },
+});
+```
+
+```js
+export default {
+  computed: {
+    counter() {
+      return this.$store.getters.finalCounter;
+    },
+  },
+};
+```
+
+# 异步 Actions
+
+mutation是同步的，立即改变状态，所以不能将异步的操作放置于此，因为会没有效果？
+
+如果一个是异步的，那么依赖它的都变成了异步，非常混乱。
+
+## actions
+
+可以使用同名，介于mutations和components之间的一个东西
+
+组件内commit改为dispatch
+
+```js
+const store = createStore({
+  state() {
+    return {
+      counter: 0,
+    };
+  },
+  mutations: {
+    increase(state, payload) {
+      state.counter += payload.value;
+    },
+  },
+  actions: {
+    increase(context, payload) {
+      setTimeout(() => {
+          //            ↓来自mutations
+        context.commit('increase', payload);
+      }, 2000);
+    },
+  },
+  getters: {
+    finalCounter(state) {
+      return state.counter * 3;
+    },
+    normalizedCounter(_, getters) {
+      const finalCounter = getters.finalCounter;
+      if (finalCounter < 0) {
+        return 0;
+      }
+      if (finalCounter > 100) {
+        return 100;
+      }
+      return finalCounter;
+    },
+  },
+});
+```
+
+```js
+export default {
+  methods: {
+    addOne() {
+      // this.$store.commit('increase', { value: 1 });
+      this.$store.dispatch({
+        type: 'increase',
+        value: 1,
+      });
+    },
+  },
+};
+```
+
+还可以在actions中改变payload
+
+# 更简单的方式引用
+
+## mapGetters
+
+---
+
+修改前
+
+```vue
+<template>
+  <h3>{{ counter }}</h3>
+</template>
+
+<script>
+export default {
+  computed: {
+    counter() {
+      return this.$store.getters.finalCounter;
+    },
+  },
+};
+</script>
+```
+
+---
+
+修改后
+
+```vue
+<template>
+  <h3>{{ finalCounter }}</h3>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    // counter() {
+    //   return this.$store.getters.finalCounter;
+    // },
+    ...mapGetters(['finalCounter']),
+  },
+};
+</script>
+```
+
+## mapActions
+
+---
+
+修改前
+
+```vue
+<template>
+  <button @click="addOne">Add one</button>
+</template>
+
+<script>
+export default {
+  methods: {
+    addOne() {
+      // this.$store.commit('increase', { value: 1 });
+      this.$store.dispatch({
+        type: 'increase',
+        value: 1,
+      });
+    },
+  },
+};
+</script>
+```
+
+---
+
+修改后
+
+```vue
+<template>
+  <button @click="increase({ value: 1 })">Add one</button>
+</template>
+
+<script>
+import { mapActions } from 'vuex';
+
+export default {
+  methods: {
+    // addOne() {
+    //   // this.$store.commit('increase', { value: 1 });
+    //   this.$store.dispatch({
+    //     type: 'increase',
+    //     value: 1,
+    //   });
+    // },
+    ...mapActions(['increase']),
+  },
+};
+</script>
+```
+
+注意action放在method里，并且有负载时，需要＋参数
+
+还可以使用映射，来改变名字
+
+```vue
+<template>
+  <!--                ↓注意这里 -->
+  <button @click="inc({ value: 1 })">Add one</button>
+</template>
+
+<script>
+import { mapActions } from 'vuex';
+
+export default {
+  methods: {
+    ...mapActions({
+      inc: 'increase',
+    }),
+  },
+};
+</script>
+```
+
+# 模块
+
+最后为local state，当然可以使用rootstate，rootgetters。。。访问到
+
+在主store中
+
+```js
+const counterModule = {
+  state() {
+    return {
+      counter: 0,
+    };
+  },
+  mutations: {
+    increase(state, payload) {
+      state.counter += payload.value;
+    },
+  },
+  actions: {
+    increase(context, payload) {
+      setTimeout(() => {
+        context.commit('increase', payload);
+      }, 2000);
+    },
+  },
+  getters: {
+    finalCounter(state) {
+      return state.counter * 3;
+    },
+    normalizedCounter(_, getters) {
+      const finalCounter = getters.finalCounter;
+      if (finalCounter < 0) {
+        return 0;
+      }
+      if (finalCounter > 100) {
+        return 100;
+      }
+      return finalCounter;
+    },
+  },
+};
+
+const store = createStore({
+// 重点在这里
+  modules: {
+    number: counterModule,
+  },
+  state() {
+    return {
+      isLoggedIn: false,
+    };
+  },
+  mutations: {
+    setAuth(state, payload) {
+      state.isLoggedIn = payload.isAuth;
+    },
+  },
+  actions: {
+    login(context) {
+      context.commit('setAuth', { isAuth: true });
+    },
+    logout(context) {
+      context.commit('setAuth', { isAuth: false });
+    },
+  },
+  getters: {
+    getIsLogged(state) {
+      return state.isLoggedIn;
+    },
+  },
+});
+```
+
+# namespaced
+
+把模块不仅仅和根store隔开还与其他模块隔开

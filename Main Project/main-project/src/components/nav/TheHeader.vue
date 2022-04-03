@@ -1,41 +1,76 @@
 <template>
-  <div>
-    <h1>Find A Coach</h1>
-    <div>
-      <button class="btn-selected">All Coach</button>
-      <button>Request</button>
-    </div>
-  </div>
+  <header>
+    <nav>
+      <h1><a href="">Find a Coach</a></h1>
+      <ul>
+        <li>
+          <router-link to="/coaches">All Coach</router-link>
+        </li>
+        <li>
+          <router-link to="/requests">Request</router-link>
+        </li>
+      </ul>
+    </nav>
+  </header>
 </template>
 
 <style scoped>
-div {
-  padding: 0 10rem;
+header {
+  width: 100%;
+  height: 5rem;
+  background-color: #3d008d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header a {
+  text-decoration: none;
+  color: #f391e3;
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid transparent;
+}
+
+a:active,
+a:hover,
+a.router-link-active {
+  border: 1px solid #f391e3;
+}
+
+h1 {
+  margin: 0;
+}
+
+h1 a {
   color: white;
-  background-color: #660099;
+  margin: 0;
+}
+
+h1 a:hover,
+h1 a:active,
+h1 a.router-link-active {
+  border-color: transparent;
+}
+
+header nav {
+  width: 90%;
+  margin: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-button {
-  height: 3rem;
-  font: inherit;
-  /* border: 1px solid #360032; */
-  border: none;
-  background-color: #660099;
-  color: white;
-  padding: 0.5rem 2rem;
-  cursor: pointer;
+header ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-button:hover,
-button:active {
-  background-color: #5c0556;
-  border-color: #5c0556;
-}
-
-.btn-selected {
-  border: 2px solid #a956d2;
+li {
+  margin: 0 0.5rem;
 }
 </style>

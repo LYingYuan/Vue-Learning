@@ -64,9 +64,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 |  last_name  | string |      教师的姓      |
 | description | string |    教师自我介绍    |
 |    rate     | number | 教师收费（每小时） |
-|    class    | array  |    教师分类标签    |
+| coach_class | array  |    教师分类标签    |
 
-### class可能选项
+### coach_class可能选项
 
 |   Name   |
 | :------: |
@@ -88,3 +88,24 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 | message  | string |       消息内容       |
 |  email   | string |  留给教师的邮箱地址  |
 
+# 步骤
+
+1. 路由
+
+# 遇到的问题
+
+1. 教师的分类标签用怎样的方式展现？考虑标签数量特别多的情况
+
+​	方案一：
+
+​	适用于数量少的情况，预设所有标签，使用v-if展示标签（介于标签的切换不会很频繁，因此不使用v-show）
+
+​	方案二：
+
+​	使用数组结合ul展示标签（难点在于处理每个标签的样式）
+
+​	最终方案：
+
+​	考虑到本次每个标签样式不一样且数量少，采用方案一
+
+2. firebase 中的数据和本地数据

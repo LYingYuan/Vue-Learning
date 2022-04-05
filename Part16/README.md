@@ -310,7 +310,7 @@ export default {
 
 12. 为什么不用beforeMount和mount呢
 
-
+​	这时候data里的数据已经生成为html了
 
 13. 标签过滤器是否需要form标签包裹
 
@@ -369,3 +369,8 @@ export default {
 
 ---
 
+10. 为避免频繁检测输入是否合法，可以使用`@blur`事件
+11. 去掉输入的空白字符可以直接在`v-model`后面加上`.trim`
+12. 使用`$refs`获得的value值总为字符串
+13. 写表单里面的input和label时，先写出框架（也就是暂时只需要写出 id 、type、for即可）
+14. 为了确保某一个空得到的数据为number类型，可以在`v-model`后面加上`.number`

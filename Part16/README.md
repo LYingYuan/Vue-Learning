@@ -316,7 +316,32 @@ export default {
 
 ​	不用
 
-14. 
+14. 如何在用户修正表单错误后及时将提醒样式去掉
+
+​	input结合`blur`使用（失去焦点时触发）
+
+```js
+// 用户输入正确的数据之后取消样式
+clearValidity(input) {
+  this[input].is_valid = true;
+},
+```
+
+​	复选框是每一个input都要添加
+
+```html
+<input
+  type="checkbox"
+  id="career"
+  value="career"
+  v-model="areas.val"
+  @blur="clearValidity('areas')"
+/>
+```
+
+---
+
+
 
 # 经验
 
@@ -376,3 +401,16 @@ export default {
 12. 使用`$refs`获得的value值总为字符串
 13. 写表单里面的input和label时，先写出框架（也就是暂时只需要写出 id 、type、for即可）
 14. 为了确保某一个空得到的数据为number类型，可以在`v-model`后面加上`.number`
+14. 在注册为教师之后为了避免回到表单，我们可以使用`this.$router.replace()`而不用`push()`
+14. 为了验证每一个输入是否正确，可以使用对象类型
+
+```js
+first_name: {
+  val: '',
+  is_valid: true,
+},
+```
+
+---
+
+17. 

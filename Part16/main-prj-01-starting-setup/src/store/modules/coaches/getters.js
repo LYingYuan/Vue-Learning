@@ -7,4 +7,10 @@ export default {
   hasCoach(state) {
     return state.coaches && state.coaches.length > 0;
   },
+  // 判断该用户是否是教师
+  isCoach(_, getters, _2, rootGetters) {
+    const coaches = getters.coaches;
+    const user_id = rootGetters.getUserId;
+    return coaches.some((coach) => coach.id === user_id);
+  },
 };

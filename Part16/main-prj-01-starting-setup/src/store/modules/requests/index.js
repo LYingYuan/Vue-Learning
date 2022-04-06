@@ -5,7 +5,9 @@ import requestsMutations from './mutations';
 export default {
   namespaced: true,
   state() {
-    return {};
+    return {
+      requests: [],
+    };
   },
   actions: requestsActions,
   getters: requestsGetters,

@@ -115,11 +115,11 @@ export default {
     validateForm() {
       // 重置为默认值
       this.first_name.is_valid = true;
-      this.last_name.is_valid = true;
-      this.description.is_valid = true;
-      this.hourly_rate.is_valid = true;
-      this.areas.is_valid = true;
-      this.form_is_valid = true;
+      // this.last_name.is_valid = true;
+      // this.description.is_valid = true;
+      // this.hourly_rate.is_valid = true;
+      // this.areas.is_valid = true;
+      // this.form_is_valid = true;
 
       if (this.first_name.val === '') {
         this.first_name.is_valid = false;

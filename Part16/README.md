@@ -280,7 +280,7 @@ contact_link() {
 },
 ```
 
-10. 通过route加载的组件如何获得动态数据（非常不熟悉）
+10. 通过route加载的组件如何获得动态数据
 
 ​	在路由route.js中添加`props:true`
 
@@ -341,7 +341,21 @@ clearValidity(input) {
 
 ---
 
+15. 在给联系界面给教师发送消息时需要教练的`id`，如何获取到id？
 
+​	方案一：由于该组件由路由控制，其父组件可以获取到`:id`的值（`props:true`，参考第10条），所以它也可获取到
+
+```js
+{
+  path: '/coaches/:id',
+  component: CoachDetail,
+  props: true,
+  //												↓在需要使用id的路由中设置 props:
+  children: [{ path: 'contact', component: ContactCoach, props: true }],
+},
+```
+
+​	方案二：使用`this.$route.params.id`
 
 # 经验
 

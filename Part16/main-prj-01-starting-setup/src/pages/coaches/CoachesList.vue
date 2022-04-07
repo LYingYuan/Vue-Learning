@@ -87,7 +87,9 @@ export default {
     async loadCoaches() {
       this.is_loading = true;
       try {
-        await this.$store.dispatch('coaches/loadCoaches');
+        await this.$store.dispatch('coaches/loadCoaches', {
+          forceRefresh: true,
+        });
       } catch (error) {
         this.error = error.message || 'Something went wrong!';
       }

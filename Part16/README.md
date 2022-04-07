@@ -475,3 +475,5 @@ export default {
 ---
 
 18. 注册的http请求采用PUT，因为POST总会创建一个新的数据
+18. 本地数据配合 firebase 减少请求次数提升用户体验
+

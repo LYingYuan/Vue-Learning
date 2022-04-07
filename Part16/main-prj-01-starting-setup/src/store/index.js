@@ -10,6 +10,7 @@ const store = createStore({
   },
   state() {
     return {
+      // TODO:添加身份验证
       userId: 'c3',
     };
   },

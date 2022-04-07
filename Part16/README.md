@@ -357,6 +357,26 @@ clearValidity(input) {
 
 ​	方案二：使用`this.$route.params.id`
 
+16. 加载页面时如何配置一个加载界面
+
+​	主要思路：需要一个ui组件，其次http请求为异步操作，返回一个promise，可以监听它
+
+​	具体实现步骤：
+
+​	设置一个flag变量`is_loading: false`
+
+![image-20220407110059700](README.assets/image-20220407110059700.png)
+
+​	在加载教练的函数中监听
+
+![image-20220407110305894](README.assets/image-20220407110305894.png)
+
+​	其他需要修改的地方
+
+![image-20220407110856540](README.assets/image-20220407110856540.png)
+
+![image-20220407110914579](README.assets/image-20220407110914579.png)
+
 # 经验
 
 1. 记得在每一个数据模块中添加`namespaced: true`以分割数据
@@ -427,4 +447,31 @@ first_name: {
 
 ---
 
-17. 
+17. 通过链接自动打开用户的邮件客户端，使用特殊的`mailto:`
+
+```vue
+<template>
+  <li>
+    <div>
+      <a :href="email_link">{{ email }}</a>
+    </div>
+    <p>{{ message }}</p>
+  </li>
+</template>
+
+<script>
+export default {
+  props: ['email', 'message'],
+  computed: {
+    email_link() {
+      // 	 ↓重点	
+      return 'mailto:' + this.email;
+    },
+  },
+};
+</script>
+```
+
+---
+
+18. 注册的http请求采用PUT，因为POST总会创建一个新的数据

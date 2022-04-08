@@ -96,6 +96,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 1. 所有组件使用一些虚拟数据结合导航展示出来
 1. 开始添加数据
 1. 某一功能数据添加后开始分离出小组件
+1. @#￥@@##...
+1. 添加各种动画
+1. 身份验证
 
 # 遇到的问题
 
@@ -377,6 +380,24 @@ clearValidity(input) {
 
 ![image-20220407110914579](README.assets/image-20220407110914579.png)
 
+17. 如何给页面间切换加上动画
+
+​	App.vue
+
+```vue
+<template>
+  <the-header></the-header>
+  <router-view v-slot="slotProps">
+    <transition name="route" mode="out-in">
+       //                       ↓注意这里要大写
+      <component :is="slotProps.Component"></component>
+    </transition>
+  </router-view>
+</template>
+```
+
+注意：需保证 component 包裹的组件只有一个根目录
+
 # 经验
 
 1. 记得在每一个数据模块中添加`namespaced: true`以分割数据
@@ -476,4 +497,6 @@ export default {
 
 18. 注册的http请求采用PUT，因为POST总会创建一个新的数据
 18. 本地数据配合 firebase 减少请求次数提升用户体验
+18. 如果要给组件制作动画，确保只有一个根标签
+18. 表单 from 范围内的 button 功能默认为提交表单，如果需要实现其他功能需要加上 `type="button"`
 

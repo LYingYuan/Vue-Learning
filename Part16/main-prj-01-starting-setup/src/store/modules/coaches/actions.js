@@ -34,13 +34,13 @@ export default {
     if (!payload.forceRefresh && !context.getters.shouldUpdate) {
       return;
     }
+    console.log('hello');
     const response = await fetch(
       `https://vue-main-project-a28d9-default-rtdb.firebaseio.com/coaches/.json`
     );
     const response_data = await response.json();
 
     if (!response.ok) {
-      // TODO:处理错误
       const error = new Error(response_data.message || 'Failed to fetch!');
       throw error;
     }
